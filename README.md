@@ -18,9 +18,9 @@ The datasets that I used for this analysis are the "bike_share_yr_0.csv" and "bi
 
 ### Tools
 
-- Excel - Data Cleaning
-- SQL Server - Create the database / Data Analysis
-- PowerBI - Connect PowerBI to the Database / Data Visualization
+- Excel - Data Cleaning 🧹
+- SQL Server - Create the database / Data Analysis 💻
+- PowerBI - Connect PowerBI to the Database / Data Visualization 📈
 
 
 ### Data Cleaning/Preparation
@@ -36,15 +36,72 @@ The EDA involved exploring the sales data to answer key questions, such as:
 
 - What is the overall Revenue?
 - Which are the profitability trends?
+<img width="361" alt="Revenue and Profit" src="https://github.com/Rmontero21/Bike-s-Sales-analysis/assets/169692846/1c815a35-a88c-4986-9c9a-6820478b3981">
+  
 - What are the peak sales periods?
+<img width="208" alt="Peak Sales" src="https://github.com/Rmontero21/Bike-s-Sales-analysis/assets/169692846/b38f623c-1d40-4fc6-bb12-594530caf9c5">
+
+
 
 ### Data Analysis
 
-Include some interesting code/features worked with
+Include some interesting code/features that I worked with
 
 ```sql
-SELECT * FROM table1
-WHERE cond = 2;
+SELECT * FROM bike_share_yr_0
+UNION
+SELECT * FROM bike_share_yr_1;
+```
+```sql
+WITH cte AS (
+    SELECT * FROM bike_share_yr_0
+    UNION
+    SELECT * FROM bike_share_yr_1
+)
+
+SELECT *
+FROM cte a
+LEFT JOIN cost_table b 
+ON a.yr = b.yr;
+```
+```sql
+WITH cte AS (
+    WITH cte AS (
+    SELECT * FROM bike_share_yr_0
+    UNION
+    SELECT * FROM bike_share_yr_1
+)
+
+SELECT
+    dteday,
+    season,
+    a.yr,
+    weekday,
+    hr,
+    rider_type,
+	riders,
+    price,
+    COGS,
+	riders*price AS Revenue,
+	riders * price - COGS * riders AS Profit
+FROM cte a
+LEFT JOIN cost_table b ON a.yr = b.yr;
+```
+```sql
+SELECT 
+    COLUMN_NAME, 
+    DATA_TYPE
+FROM 
+    INFORMATION_SCHEMA.COLUMNS 
+WHERE 
+    TABLE_NAME = 'cost_table';
+```
+```sql
+ALTER TABLE dbo.cost_table
+ALTER COLUMN COGS money;
+
+ALTER TABLE dbo.cost_table
+ALTER COLUMN price money;
 ```
 
 ### Results/Findings
