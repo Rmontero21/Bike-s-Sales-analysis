@@ -66,7 +66,6 @@ ON a.yr = b.yr;
 ```
 ```sql
 WITH cte AS (
-    WITH cte AS (
     SELECT * FROM bike_share_yr_0
     UNION
     SELECT * FROM bike_share_yr_1
